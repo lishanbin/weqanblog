@@ -1,40 +1,22 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Weqan.Blog.Model;
 
 namespace Weqan.Blog.DAL
 {
-    /// <summary>
-    ///  分类表DAL
-    /// </summary>
-    public class CategoryDAL
+    public class BlogDAL
     {
         /// <summary>
         /// 新增
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public int Insert(Category m)
+        public int Insert(Model.Blog bo)
         {
             using (var connection = ConnectionFactory.GetOpenConnection())
             {
-                int resid = connection.Query<int>(@"INSERT INTO Category(CaName,Bh,Pbh,Remark) VALUES(@CaName,@Bh,@Pbh,@Remark);SELECT @@IDENTITY;", m).FirstOrDefault();
+                int resid = connection.Query<int>(@"INSERT INTO Blog(Title,Body,Body_md,VisitNum,CaBh,CaName,Remark,Sort) VALUES(@Title,@Body,@Body_md,@VisitNum,@CaBh,@CaName,@Remark,@Sort);SELECT @@IDENTITY;", bo).FirstOrDefault();
                 return resid;
-            }
-        }
-        /// <summary>
-        /// 根据分类编号取实体类
-        /// </summary>
-        /// <param name="caBh"></param>
-        /// <returns></returns>
-        public Category GetModelByBh(string caBh)
-        {
-            using (var connection=ConnectionFactory.GetOpenConnection())
-            {
-                var m = connection.Query<Model.Category>("select * from Category where Bh=@Bh", new { Bh = caBh }).FirstOrDefault();
-                return m;
             }
         }
 
@@ -47,7 +29,7 @@ namespace Weqan.Blog.DAL
         {
             using (var connection = ConnectionFactory.GetOpenConnection())
             {
-                int res = connection.Execute(@"DELETE FROM Category WHERE Id=@Id", new { Id = id });
+                int res = connection.Execute(@"DELETE FROM Blog WHERE Id=@Id", new { Id = id });
                 if (res > 0)
                 {
                     return true;
@@ -64,16 +46,16 @@ namespace Weqan.Blog.DAL
         /// </summary>
         /// <param name="cond"></param>
         /// <returns></returns>
-        public List<Category> GetList(string cond)
+        public List<Model.Blog> GetList(string cond)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection = ConnectionFactory.GetOpenConnection())
             {
-                string sql = "SELECT * FROM Category";
+                string sql = "SELECT * FROM Blog";
                 if (!string.IsNullOrEmpty(cond))
                 {
                     sql += $" where {cond}";
                 }
-                var list = connection.Query<Category>(sql).ToList();
+                var list = connection.Query<Model.Blog>(sql).ToList();
                 return list;
             }
         }
@@ -83,11 +65,11 @@ namespace Weqan.Blog.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Category GetModel(int id)
+        public Model.Blog GetModel(int id)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection = ConnectionFactory.GetOpenConnection())
             {
-                var m = connection.Query<Category>("select * from Category where Id=@Id", new { Id = id }).FirstOrDefault();
+                var m = connection.Query<Model.Blog>("select * from Blog where Id=@Id", new { Id = id }).FirstOrDefault();
                 return m;
             }
         }
@@ -97,21 +79,18 @@ namespace Weqan.Blog.DAL
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public bool Update(Category m)
+        public bool Update(Model.Blog bo)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection = ConnectionFactory.GetOpenConnection())
             {
-                int res = connection.Execute(@"UPDATE Category SET CaName=@CaName,Bh=@Bh,Pbh=@Pbh,Remark=@Remark WHERE Id=@Id", m);
-                if (res>0)
+                int res = connection.Execute(@"UPDATE Blog SET Title=@Title,Body=@Body,Body_md=@Body_md,VisitNum=@VisitNum,CaBh=@CaBh,CaName=@CaName,Remark=@Remark,Sort=@Sort WHERE Id=@Id", bo);
+                if (res > 0)
                 {
                     return true;
                 }
                 return false;
             }
         }
-
-
-
 
 
     }
