@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,24 @@ namespace Weqan.Blog.DAL
                 int resid = connection.Query<int>(@"INSERT INTO Blog(Title,Body,Body_md,VisitNum,CaBh,CaName,Remark,Sort) VALUES(@Title,@Body,@Body_md,@VisitNum,@CaBh,@CaName,@Remark,@Sort);SELECT @@IDENTITY;", bo).FirstOrDefault();
                 return resid;
             }
+        }
+        /// <summary>
+        /// 计算博客总记录数
+        /// </summary>
+        /// <returns></returns>
+        public int CalcCount(string cond)
+        {
+            string sql = "select count(1) from Blog";
+            if (!string.IsNullOrEmpty(cond))
+            {
+                sql += $" where {cond}";
+            }
+            using (var connection = ConnectionFactory.GetOpenConnection())
+            {
+                int res = connection.ExecuteScalar<int>(sql);
+                return res;
+            }
+
         }
 
         /// <summary>
@@ -58,6 +77,29 @@ namespace Weqan.Blog.DAL
                 var list = connection.Query<Model.Blog>(sql).ToList();
                 return list;
             }
+        }
+
+        /// <summary>
+        /// 分页，使用offset,mssql2012以后有用
+        /// </summary>
+        /// <param name="orderstr">如：yydate desc,yytime asc,id desc,必须形成唯一性</param>
+        /// <param name="PageSize">每页大小</param>
+        /// <param name="PageIndex">页索引</param>
+        /// <param name="strWhere">条件，不用加where</param>
+        /// <returns></returns>
+        public List<Model.Blog> GetList(string orderstr,int PageSize,int PageIndex,string strWhere)
+        {
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                strWhere = " where " + strWhere;
+            }
+            string sql = string.Format("select * from Blog {0} order by {1} offset {2} rows fetch next {3} rows only", strWhere, orderstr, (PageIndex - 1) * PageSize, PageSize);
+            List<Model.Blog> list = new List<Model.Blog>();
+            using (var connection=ConnectionFactory.GetOpenConnection())
+            {
+                list = connection.Query<Model.Blog>(sql).ToList();
+            }
+            return list;
         }
 
         /// <summary>
