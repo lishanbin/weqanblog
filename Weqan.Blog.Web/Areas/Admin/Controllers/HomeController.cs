@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Weqan.Blog.Web.Areas.Admin.Controllers
 {
@@ -22,6 +20,13 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            int? adminid = HttpContext.Session.GetInt32("adminid");
+            if (adminid==null)
+            {
+                //未登录
+                return Redirect("/Admin/Login");
+            }
+
             return View();
         }
 
@@ -55,7 +60,7 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
         public IActionResult ImgUpload()
         {
             var imgFile = Request.Form.Files[0];
-            if (imgFile!=null&&!string.IsNullOrEmpty(imgFile.FileName))
+            if (imgFile != null && !string.IsNullOrEmpty(imgFile.FileName))
             {
                 long size = 0;
                 string tempname = "";
@@ -63,7 +68,7 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
                 var extname = filename.Substring(filename.LastIndexOf("."), filename.Length - filename.LastIndexOf("."));//扩展名,如.jpg
 
                 #region 判断后缀
-                if (!extname.ToLower().Contains("jpg")|| !extname.ToLower().Contains("png")|| !extname.ToLower().Contains("gif"))
+                if (!extname.ToLower().Contains("jpg") || !extname.ToLower().Contains("png") || !extname.ToLower().Contains("gif"))
                 {
                     return Json(new { code = 1, msg = "只允许上传jpg,png,gif格式的图片。" });
                 }
@@ -71,7 +76,7 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
                 #endregion
                 #region 判断大小
                 long mb = imgFile.Length / 1024 / 1024;  //MB
-                if (mb>5)
+                if (mb > 5)
                 {
                     return Json(new { code = 1, msg = "只允许上传 5MB 的图片。" });
                 }
@@ -83,13 +88,13 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
 
                 var path = hostingEnv.WebRootPath;
                 string dir = DateTime.Now.ToString("yyyyMMdd");
-                if (!System.IO.Directory.Exists(hostingEnv.WebRootPath+$@"\upload\{dir}"))
+                if (!System.IO.Directory.Exists(hostingEnv.WebRootPath + $@"\upload\{dir}"))
                 {
                     System.IO.Directory.CreateDirectory(hostingEnv.WebRootPath + $@"\upload\{dir}");
                 }
                 filename = hostingEnv.WebRootPath + $@"\upload\{dir}\{filename1}";
                 size += imgFile.Length;
-                using (FileStream fs=System.IO.File.Create(filename))
+                using (FileStream fs = System.IO.File.Create(filename))
                 {
                     imgFile.CopyTo(fs);
                     fs.Flush();

@@ -27,8 +27,14 @@ namespace Weqan.Blog.Web
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;//这里要改为false，原来是true的，true的时候session无效，Stack Overflow万岁！
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
 
@@ -50,6 +56,9 @@ namespace Weqan.Blog.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
+
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
