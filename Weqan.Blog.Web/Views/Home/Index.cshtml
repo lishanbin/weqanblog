@@ -1,94 +1,316 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
+    Weqan.Blog.DAL.BlogDAL blogdal = new Weqan.Blog.DAL.BlogDAL();
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>维千网 - 一个IT技术分享的网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="/assets/Hexo/css/style.css" rel="stylesheet" />
+    <link href="/assets/Default/styles/font-awesome.css" rel="stylesheet" />
+    <script src="/assets/Hexo/js/jquery-1.10.2.min.js"></script>
+    <link href="/assets/Hexo/css/fancybox.css" rel="stylesheet" />
+    <script src="/assets/Hexo/js/highlight.js"></script>
+    <script src="/assets/Hexo/js/r.js"></script>
+    <script src="/assets/Hexo/js/main.js"></script>
+    <link href="/layui/css/layui.css" rel="stylesheet" />
+    <script src="/layui/layui.js"></script>
+    <script>
+        var yiliaConfig = {
+            fancybox: true,
+            mathjax: true,
+            animate: true,
+            isHome: true,
+            isPost: false,
+            isArchive: false,
+            isTag: false,
+            isCategory: false,
+            open_in_new: false
+        }
+    </script>
+</head>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
+<body>
+    <div id="container">
+        <div class="left-col">
+            <div class="overlay"></div>
+            <div class="intrude-less">
+                <header id="header" class="inner">
+                    <a href="/" class="profilepic">
+                        <img lazy-src="/images/weqan.png"  class="js-avatar">
                     </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+                    <hgroup>
+                        <h1 class="header-author"><a href="/">维千网</a></h1>
+                    </hgroup>
+
+
+                    <p class="header-subtitle">一个IT技术分享的网站</p>
+
+                    <div class="layui-form-item">
+                            <input type="text" name="title" required  lay-verify="required" placeholder="查询关键字" autocomplete="off" class="layui-input" style="width:60%;float: left;">
+                            <button class="layui-btn"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+
+                    <div class="switch-btn">
+                        <div class="icon">
+                            <div class="icon-ctn">
+                                <div class="icon-wrap icon-house" data-idx="0">
+                                    <div class="birdhouse"></div>
+                                    <div class="birdhouse_holes"></div>
+                                </div>
+                                <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                                    <div class="ribbon"></div>
+                                </div>
+
+                                <div class="icon-wrap icon-link hide" data-idx="2">
+                                    <div class="loopback_l"></div>
+                                    <div class="loopback_r"></div>
+                                </div>
+
+
+                                <div class="icon-wrap icon-me hide" data-idx="3">
+                                    <div class="user"></div>
+                                    <div class="shoulder"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="tips-box hide">
+                            <div class="tips-arrow"></div>
+                            <ul class="tips-inner">
+                                <li>菜单</li>
+                                <li>日历</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="switch-area">
+                        <div class="switch-wrap">
+                            <section class="switch-part switch-part1">
+                                <nav class="header-menu">
+                                    <ul>
+                                        @foreach (Weqan.Blog.Model.Category ca in ViewBag.calist)
+                                        {
+                                            <li><a href="/Home/Index?cabh=@ca.Bh">@ca.CaName （@(blogdal.CalcCount($"cabh='{ca.Bh}'"))）</a></li>
+                                        }
+                                    </ul>
+                                </nav>
+                                <nav class="header-nav">
+                                    <div class="social">
+                                        <a class="github" target="_blank" href="https://github.com/xiaotian000" title="github">github</a>
+                                        <a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E7%A7%8B%E5%AE%9E-%E7%94%B0-146850126" title="LinkedIn">LinkedIn</a>
+                                        <a class="mail" target="_blank" href="mailto:984901912@qq.com" title="Email">Email</a>
+                                    </div>
+                                </nav>
+                            </section>
+                            <section class="switch-part switch-part2">
+                                <div class="widget">
+
+                                    <nav class="header-menu">
+                                        <ul>
+                                            @foreach (string month in ViewBag.blogmonth)
+                                            {
+                                                DateTime d = DateTime.Parse(month + "-01");
+                                                string cond = $"CreateDate>='{d.ToString("yyyy-MM-dd")}' and CreateDate<'{d.AddMonths(1).ToString("yyyy-MM-dd")}'";
+
+                                                <li><a href="/Home/Index?month=@month">@month （@(blogdal.CalcCount(cond))）</a></li>
+                                            }
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </header>
+            </div>
+
+        </div>
+        <div class="mid-col">
+            <nav id="mobile-nav">
+                <div class="overlay">
+                    <h1 class="header-author js-mobile-header hide">维千网</h1>
+                </div>
+                <div class="intrude-less">
+                    <header id="header" class="inner">
+                        <div class="profilepic">
+                            <img src="/images/weqan.png" class="js-avatar">
+                        </div>
+                        <hgroup>
+                            <h1 class="header-author">维千网</h1>
+                        </hgroup>
+
+                        <p class="header-subtitle">一个IT技术分享的网站</p>
+
+                        <nav class="header-menu">
+                            <ul>
+                                @foreach (Weqan.Blog.Model.Category ca in ViewBag.calist)
+                                {
+                                    <li><a href="/Home/Index?cabh=@ca.Bh">@ca.CaName （@(blogdal.CalcCount($"cabh='{ca.Bh}'"))）</a></li>
+                                }
+                                <div class="clearfix"></div>
+                            </ul>
+                        </nav>
+                        <nav class="header-nav">
+                            <div class="social">
+                                <a class="github" target="_blank" href="https://github.com/xiaotian000" title="github">github</a>
+                                <a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E7%A7%8B%E5%AE%9E-%E7%94%B0-146850126" title="LinkedIn">LinkedIn</a>
+                                <a class="mail" target="_blank" href="mailto:984901912@qq.com" title="Email">Email</a>
+                            </div>
+                        </nav>
+                    </header>
+                </div>
+            </nav>
+
+            <div class="body-wrap">
+                <div id="articles">
+                    @*<article class="article article-type-post" itemscope itemprop="blogPost">
+                        <div class="article-meta">
+                            <a href="/post/" class="article-date">
+                                <time datetime="" itemprop="datePublished">2016年12月25日 21:22</time>
+                            </a>
+                        </div>
+                        <div class="article-inner">
+                            <input type="hidden" class="isFancy" />
+                            <header class="article-header">
+                                <h1 itemprop="name">
+                                    <a class="article-title" href="/post/">文章标题</a>
+                                </h1>
+                            </header>
+                            <div class="article-entry" itemprop="articleBody">
+                                这里是简要说明。。。
+                            </div>
+                            <div class="article-info article-info-index">
+                                <div class="article-tag tagcloud">
+                                    <ul class="article-tag-list">
+
+                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">.net</a></li>
+                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">niunan</a></li>
+                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">sql</a></li>
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </article>*@
+                </div>
+                <div style="padding: 0 15px;">
+                    <div style="float: left;line-height: 53px;margin: 0 15px;font-size: 16px;">当前共<span id="totalcount"></span>篇文章，第<span id="pageindex"></span>页/共<span id="pagecount"></span>页</div>
+                    <div id="pages"></div>
+                </div>
+            </div>
+
+            <footer id="footer">
+                <div class="outer">
+                    <div id="footer-info">
+                        <div class="footer-left">
+                            版权所有 &copy; 2019 <a href="http://www.weqan.cn">www.weqan.cn</a>
+                        </div>
+                        <div class="footer-right">
+                            Powered by <a href="http://www.weqan.cn" target="_blank">维千网</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+
+       
+        <script>
+            /* 分页 */
+            layui.use(['laypage', 'layer'], function () {
+                var laypage = layui.laypage
+                    , layer = layui.layer, $ = layui.jquery;
+
+                var url = "/Blog/GetTotalCount?t=" + new Date().valueOf();
+                $.post(url, function (count) {
+
+                    $('#totalcount').text(count);
+
+                    //调用分页
+                    laypage.render({
+                        elem: 'pages'
+                        , limit: 10
+                        , count: count //数据总数，从服务端得到
+                        , jump: function (obj, first) {
+                            //obj包含了当前分页的所有参数，比如：
+                            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            console.log(obj.limit); //得到每页显示的条数
+                            var pageindex = obj.curr;
+                            var pagesize = obj.limit;
+
+                            var pagecount = (count % pagesize == 0) ? count / pagesize : Math.ceil(count / pagesize);//总页数
+                            $('#pagecount').text(pagecount);
+
+                            //首次不执行
+                            //if (!first) {
+                            //do something
+                            load_blog_data(pageindex, pagesize);
+                            // }
+                        }
+                    });
+
+                });
+
+            });
+            /*加载第X页数据*/
+            function load_blog_data(pageindex, pagesize) {
+                layui.use('layer', function () {
+                    var $ = layui.jquery, layer = layui.layer;
+
+                    $('#pageindex').text(pageindex);
+
+                    var postdata = {};
+
+                    var url = "/Blog/List?pageindex=" + pageindex + "&pagesize=" + pagesize;
+                    $.post(url, postdata, function (json) {
+                        var html = '';
+
+                        $.each(json, function (i, blog) {
+                            console.log("第" + i + "个元素");
+                            html += '<article class="article article-type-post" itemscope itemprop="blogPost">';
+                            html += '    <div class="article-meta">';
+                            html += '        <a href="/Blog/Show/'+blog.id+'" class="article-date">';
+                            html += '            <time datetime="" itemprop="datePublished">' + blog.createDate + '</time>';
+                            html += '        </a>';
+                            html += '    </div>';
+                            html += '    <div class="article-inner">';
+                            html += '        <input type="hidden" class="isFancy" />';
+                            html += '        <header class="article-header">';
+                            html += '            <h1 itemprop="name">';
+                            html += '                <a class="article-title" href="/Blog/Show/' + blog.id +'">' + blog.title + '</a>';
+                            html += '            </h1>';
+                            html += '        </header>';
+                            html += '        <div class="article-entry" itemprop="articleBody">';
+                            html += blog.desc;
+                            html += '        </div>';
+                            html += '        <div class="article-info article-info-index">';
+                            html += '            <div class="article-tag tagcloud">';
+                            html += '                <ul class="article-tag-list">';
+                            html += '<li class="article-tag-list-item">';
+                            html += '   <a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">' + blog.caName + '</a>';
+                            html += '</li>';
+                            html += '                </ul>';
+                            html += '            </div>';
+                            html += '            <div class="clearfix"></div>';
+                            html += '        </div>';
+                            html += '    </div>';
+                            html += '</article>';
+                        });
+
+                        $('#articles').html(html);
+                    }, 'json');
+
+                });
+            }
+
+        </script>
+
+
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>
+</body>
+</html>

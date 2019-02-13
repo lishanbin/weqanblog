@@ -8,6 +8,20 @@ namespace Weqan.Blog.DAL
     public class BlogDAL
     {
         /// <summary>
+        /// 返回博客的月份
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetBlogMonth()
+        {
+            string sql = "select left(CONVERT(varchar(100),CreateDate,23),7) as aa from Blog group by left(CONVERT(varchar(100),CreateDate,23),7) order by aa desc ";
+            using (var connection=ConnectionFactory.GetOpenConnection())
+            {
+                var list = connection.Query<string>(sql).ToList();
+                return list;
+            }
+        }
+
+        /// <summary>
         /// 新增
         /// </summary>
         /// <param name="m"></param>

@@ -10,6 +10,30 @@ namespace Weqan.Blog.Web
 {
     public class Tool
     {
+
+
+
+
+        /// <summary>
+        /// 去除HTML标签，返回特定长度字符串
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string ReplaceHtmlTag(string html, int length = 0)
+        {
+            string strText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");
+            strText = System.Text.RegularExpressions.Regex.Replace(strText, "&[^;]+;", "");
+
+            if (length > 0 && strText.Length > length)
+                return strText.Substring(0, length);
+
+            return strText;
+        }
+
+
+
+
         /// <summary>过滤SQL非法字符串
         /// 字符串长度不能超过40个,把前后空间都去除
         /// </summary>
