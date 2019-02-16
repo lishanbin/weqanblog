@@ -51,8 +51,8 @@
                     <p class="header-subtitle">一个IT技术分享的网站</p>
 
                     <div class="layui-form-item">
-                            <input type="text" name="title" required  lay-verify="required" placeholder="查询关键字" autocomplete="off" class="layui-input" style="width:60%;float: left;">
-                            <button class="layui-btn"><i class="layui-icon">&#xe615;</i>查询</button>
+                            <input type="text" name="key" id="search_key" required  lay-verify="required" placeholder="查询关键字" autocomplete="off" class="layui-input" style="width:60%;float: left;">
+                            <button class="layui-btn" onclick="search()"><i class="layui-icon">&#xe615;</i>查询</button>
                     </div>
 
                     <div class="switch-btn">
@@ -130,6 +130,7 @@
             </div>
 
         </div>
+       
         <div class="mid-col">
             <nav id="mobile-nav">
                 <div class="overlay">
@@ -169,34 +170,34 @@
             <div class="body-wrap">
                 <div id="articles">
                     @*<article class="article article-type-post" itemscope itemprop="blogPost">
-                        <div class="article-meta">
-                            <a href="/post/" class="article-date">
-                                <time datetime="" itemprop="datePublished">2016年12月25日 21:22</time>
-                            </a>
+                    <div class="article-meta">
+                        <a href="/post/" class="article-date">
+                            <time datetime="" itemprop="datePublished">2016年12月25日 21:22</time>
+                        </a>
+                    </div>
+                    <div class="article-inner">
+                        <input type="hidden" class="isFancy" />
+                        <header class="article-header">
+                            <h1 itemprop="name">
+                                <a class="article-title" href="/post/">文章标题</a>
+                            </h1>
+                        </header>
+                        <div class="article-entry" itemprop="articleBody">
+                            这里是简要说明。。。
                         </div>
-                        <div class="article-inner">
-                            <input type="hidden" class="isFancy" />
-                            <header class="article-header">
-                                <h1 itemprop="name">
-                                    <a class="article-title" href="/post/">文章标题</a>
-                                </h1>
-                            </header>
-                            <div class="article-entry" itemprop="articleBody">
-                                这里是简要说明。。。
-                            </div>
-                            <div class="article-info article-info-index">
-                                <div class="article-tag tagcloud">
-                                    <ul class="article-tag-list">
+                        <div class="article-info article-info-index">
+                            <div class="article-tag tagcloud">
+                                <ul class="article-tag-list">
 
-                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">.net</a></li>
-                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">niunan</a></li>
-                                        <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">sql</a></li>
-                                    </ul>
-                                </div>
-                                <div class="clearfix"></div>
+                                    <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">.net</a></li>
+                                    <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">niunan</a></li>
+                                    <li class="article-tag-list-item"><a class="article-tag-list-link" asp-action="Tag" asp-controller="Home" asp-route-tag="">sql</a></li>
+                                </ul>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                    </article>*@
+                    </div>
+                </article>*@
                 </div>
                 <div style="padding: 0 15px;">
                     <div style="float: left;line-height: 53px;margin: 0 15px;font-size: 16px;">当前共<span id="totalcount"></span>篇文章，第<span id="pageindex"></span>页/共<span id="pagecount"></span>页</div>
@@ -216,18 +217,22 @@
                     </div>
                 </div>
             </footer>
+
+            <input type="hidden" name="hf_key" id="hf_key" value="@ViewBag.search_key" />
+            <input type="hidden" name="hf_month" id="hf_month" value="@ViewBag.search_month" />
+            <input type="hidden" name="hf_cabh" id="hf_cabh" value="@ViewBag.search_cabh" />
         </div>
-
-
-       
+ 
         <script>
             /* 分页 */
             layui.use(['laypage', 'layer'], function () {
                 var laypage = layui.laypage
                     , layer = layui.layer, $ = layui.jquery;
 
+                var postdata = getcond();
+
                 var url = "/Blog/GetTotalCount?t=" + new Date().valueOf();
-                $.post(url, function (count) {
+                $.post(url, postdata, function (count) {
 
                     $('#totalcount').text(count);
 
@@ -264,7 +269,7 @@
 
                     $('#pageindex').text(pageindex);
 
-                    var postdata = {};
+                    var postdata = getcond();
 
                     var url = "/Blog/List?pageindex=" + pageindex + "&pagesize=" + pagesize;
                     $.post(url, postdata, function (json) {
@@ -308,6 +313,31 @@
                 });
             }
 
+            /*拼接条件返回postdata*/
+            function getcond() {
+                var key = $('#hf_key').val();
+                var month = $('#hf_month').val();
+                var cabh = $('#hf_cabh').val();
+                var postdata = { key: key, month: month, cabh: cabh };
+                return postdata;
+            }
+
+            /*取URL参数的方法(参数中有中文时有错误) */
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return unescape(r[2]);
+                }
+                return null;
+            }
+
+            /*查询*/
+            function search() {
+                var key = $('#search_key').val();
+                var url = "/Home/Index?key=" + key;
+                location.href = url;
+            }
         </script>
 
 

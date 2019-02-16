@@ -11,14 +11,49 @@ namespace Weqan.Blog.Web.Controllers
     {
         DAL.BlogDAL dal = new DAL.BlogDAL();
 
+
+
         /// <summary>
-        /// 取博客总记录数
+        /// 取博客记录数
         /// </summary>
         /// <returns></returns>
-        public IActionResult GetTotalCount()
+        public IActionResult GetTotalCount(string key,string month,string cabh)
         {
-            int totalcount = dal.CalcCount("");
+            int totalcount = dal.CalcCount(GetCond(key,month,cabh));
             return Content(totalcount.ToString());
+        }
+        /// <summary>
+        /// 拼接条件
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="month"></param>
+        /// <param name="cabh"></param>
+        /// <returns></returns>
+        private string GetCond(string key, string month, string cabh)
+        {
+            string cond = "1=1";
+            if (!string.IsNullOrEmpty(key))
+            {
+                key = Tool.GetSafeSQL(key);
+                cond += $" and Title like '%{key}%'";
+            }
+            if (!string.IsNullOrEmpty(month))
+            {
+                DateTime d;
+                if (DateTime.TryParse(month+"-01",out d))
+                {
+                    cond += $" and CreateDate>='{d.ToString("yyyy-MM-dd")}' and CreateDate<'{d.AddMonths(1).ToString("yyyy-MM-dd")}'";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(cabh))
+            {
+                cabh = Tool.GetSafeSQL(cabh);
+                cond += $" and cabh='{cabh}'";
+            }
+
+            return cond;
+
         }
 
         /// <summary>
@@ -27,9 +62,9 @@ namespace Weqan.Blog.Web.Controllers
         /// <param name="pageindex"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public IActionResult List(int pageindex, int pagesize)
+        public IActionResult List(int pageindex, int pagesize,string key,string month,string cabh)
         {
-            List<Model.Blog> list = dal.GetList("Sort asc,Id desc", pagesize, pageindex, "");
+            List<Model.Blog> list = dal.GetList("Sort asc,Id desc", pagesize, pageindex, GetCond(key,month,cabh));
             ArrayList arr = new ArrayList();
             foreach (var item in list)
             {
@@ -54,6 +89,10 @@ namespace Weqan.Blog.Web.Controllers
         /// <returns></returns>
         public IActionResult Show(int id)
         {
+
+            ViewBag.calist = new DAL.CategoryDAL().GetList("");
+            ViewBag.blogmonth = new DAL.BlogDAL().GetBlogMonth();
+            
             Model.Blog b = dal.GetModel(id);
             if (b==null)
             {
