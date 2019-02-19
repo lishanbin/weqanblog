@@ -9,9 +9,14 @@ namespace Weqan.Blog.Web.Controllers
 {
     public class BlogController : Controller
     {
-        DAL.BlogDAL dal = new DAL.BlogDAL();
+        private readonly DAL.BlogDAL dal;
+        private readonly DAL.CategoryDAL cadal;
 
-
+        public BlogController(DAL.BlogDAL bdal,DAL.CategoryDAL cadal)
+        {
+            this.dal = bdal;
+            this.cadal = cadal;
+        }
 
         /// <summary>
         /// 取博客记录数
@@ -89,9 +94,10 @@ namespace Weqan.Blog.Web.Controllers
         /// <returns></returns>
         public IActionResult Show(int id)
         {
+            ViewBag.bdal = dal;
 
-            ViewBag.calist = new DAL.CategoryDAL().GetList("");
-            ViewBag.blogmonth = new DAL.BlogDAL().GetBlogMonth();
+            ViewBag.calist = cadal.GetList("");
+            ViewBag.blogmonth = dal.GetBlogMonth();
             
             Model.Blog b = dal.GetModel(id);
             if (b==null)

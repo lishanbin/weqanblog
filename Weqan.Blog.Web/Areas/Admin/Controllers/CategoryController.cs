@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Weqan.Blog.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
-        DAL.CategoryDAL dal = new DAL.CategoryDAL();
+        private readonly DAL.CategoryDAL dal;
+
+        public CategoryController(DAL.CategoryDAL dal)
+        {
+            this.dal = dal;
+        }
+
         public IActionResult Index()
         {
             //生成节点数据JSON

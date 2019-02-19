@@ -11,9 +11,14 @@ namespace Weqan.Blog.DAL
     /// </summary>
     public class ConnectionFactory
     {
-        public static DbConnection GetOpenConnection()
+        /// <summary>
+        /// 取数据库连接
+        /// </summary>
+        /// <param name="connStr">数据库连接字符串</param>
+        /// <returns></returns>
+        public static DbConnection GetOpenConnection(string connStr)
         {
-            var connection = new SqlConnection(@"Data Source=.;Initial Catalog=blogcore;User ID=sa;Password=lsb@1972");
+            var connection = new SqlConnection(connStr);
             connection.Open();
 
             return connection;

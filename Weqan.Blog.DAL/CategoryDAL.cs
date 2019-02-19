@@ -12,6 +12,12 @@ namespace Weqan.Blog.DAL
     public class CategoryDAL
     {
         /// <summary>
+        /// 数据库连接字符串，从web层传入
+        /// </summary>
+        public string ConnStr { get; set; }
+
+
+        /// <summary>
         /// 编号计算
         /// </summary>
         /// <param name="pbh">父编号</param>
@@ -20,7 +26,7 @@ namespace Weqan.Blog.DAL
         public string GenBH(string pbh,int x)
         {
             string sql = "select right(max(bh)," + x + ") from Category where pbh=" + pbh;
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 string res = connection.ExecuteScalar<string>(sql);
                 if (string.IsNullOrEmpty(res))
@@ -57,7 +63,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public int Insert(Category m)
         {
-            using (var connection = ConnectionFactory.GetOpenConnection())
+            using (var connection = ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 int resid = connection.Query<int>(@"INSERT INTO Category(CaName,Bh,Pbh,Remark) VALUES(@CaName,@Bh,@Pbh,@Remark);SELECT @@IDENTITY;", m).FirstOrDefault();
                 return resid;
@@ -70,7 +76,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public Category GetModelByBh(string caBh)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 var m = connection.Query<Model.Category>("select * from Category where Bh=@Bh", new { Bh = caBh }).FirstOrDefault();
                 return m;
@@ -88,7 +94,7 @@ namespace Weqan.Blog.DAL
             {
                 sql += $" where {cond}";
             }
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 int res = connection.ExecuteScalar<int>(sql);
                 return res;
@@ -102,7 +108,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public bool Delete(int id)
         {
-            using (var connection = ConnectionFactory.GetOpenConnection())
+            using (var connection = ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 int res = connection.Execute(@"DELETE FROM Category WHERE Id=@Id", new { Id = id });
                 if (res > 0)
@@ -123,7 +129,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public List<Category> GetList(string cond)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 string sql = "SELECT * FROM Category";
                 if (!string.IsNullOrEmpty(cond))
@@ -142,7 +148,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public Category GetModel(int id)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 var m = connection.Query<Category>("select * from Category where Id=@Id", new { Id = id }).FirstOrDefault();
                 return m;
@@ -156,7 +162,7 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public bool Update(Category m)
         {
-            using (var connection=ConnectionFactory.GetOpenConnection())
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 int res = connection.Execute(@"UPDATE Category SET CaName=@CaName,Bh=@Bh,Pbh=@Pbh,Remark=@Remark WHERE Id=@Id", m);
                 if (res>0)

@@ -10,11 +10,14 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeController : Controller
     {
+        //用于读取网站静态文件目录
         private readonly IHostingEnvironment hostingEnv;
+        private readonly DAL.BlogDAL blogdal;
 
-        public HomeController(IHostingEnvironment env)
+        public HomeController(IHostingEnvironment env,DAL.BlogDAL blogdal)
         {
             this.hostingEnv = env;
+            this.blogdal = blogdal;
         }
 
 
@@ -32,6 +35,9 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
 
         public IActionResult Top()
         {
+            string adminname = HttpContext.Session.GetString("adminusername");
+            ViewBag.username = adminname;
+
             return View();
         }
 
@@ -42,6 +48,8 @@ namespace Weqan.Blog.Web.Areas.Admin.Controllers
 
         public IActionResult Welcome()
         {
+            ViewBag.blogcount = blogdal.CalcCount("");
+
             return View();
         }
 

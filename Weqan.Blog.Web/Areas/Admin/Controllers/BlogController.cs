@@ -6,10 +6,16 @@ using System.Collections.Generic;
 namespace Weqan.Blog.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class BlogController : Controller
+    public class BlogController : BaseController
     {
-        DAL.BlogDAL dal = new DAL.BlogDAL();
-        DAL.CategoryDAL cadal = new DAL.CategoryDAL();
+        private readonly DAL.BlogDAL dal;
+        private readonly DAL.CategoryDAL cadal;
+
+        public BlogController(DAL.BlogDAL dal,DAL.CategoryDAL cadal)
+        {
+            this.dal = dal;
+            this.cadal = cadal;
+        }
 
         public IActionResult Index()
         {

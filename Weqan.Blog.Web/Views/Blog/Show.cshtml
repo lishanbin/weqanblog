@@ -1,6 +1,6 @@
 ﻿@{
     Layout = null;
-    Weqan.Blog.DAL.BlogDAL blogdal = new Weqan.Blog.DAL.BlogDAL();
+    Weqan.Blog.DAL.BlogDAL blogdal = ViewBag.bdal;
 }
 
 @model Weqan.Blog.Model.Blog
@@ -104,8 +104,8 @@
                                 </nav>
                                 <nav class="header-nav">
                                     <div class="social">
-                                        <a class="github" target="_blank" href="https://github.com/xiaotian000" title="github">github</a>
-                                        <a class="linkedin" target="_blank" href="http://www.linkedin.com/in/%E7%A7%8B%E5%AE%9E-%E7%94%B0-146850126" title="LinkedIn">LinkedIn</a>
+                                        <a class="github" target="_blank" href="https://github.com/lishanbin" title="github">github</a>
+                                        <a class="linkedin" target="_blank" href="https://github.com/lishanbin" title="LinkedIn">LinkedIn</a>
                                         <a class="mail" target="_blank" href="mailto:984901912@qq.com" title="Email">Email</a>
                                     </div>
                                 </nav>
@@ -141,7 +141,9 @@
                 <div class="intrude-less">
                     <header id="header" class="inner">
                         <div class="profilepic">
-                            <img src="/images/weqan.png" class="js-avatar">
+                            <a href="/">
+                                <img src="/images/weqan.png" class="js-avatar">
+                            </a>                            
                         </div>
                         <hgroup>
                             <h1 class="header-author">维千网</h1>
