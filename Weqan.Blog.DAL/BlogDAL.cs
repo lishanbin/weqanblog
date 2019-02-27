@@ -19,7 +19,11 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public List<string> GetBlogMonth()
         {
-            string sql = "select left(CONVERT(varchar(100),CreateDate,23),7) as aa from Blog group by left(CONVERT(varchar(100),CreateDate,23),7) order by aa desc ";
+            //sql server
+            //string sql = "select left(CONVERT(varchar(100),CreateDate,23),7) as aa from Blog group by left(CONVERT(varchar(100),CreateDate,23),7) order by aa desc ";
+
+            //mysql
+            string sql = "SELECT DATE_FORMAT(Createdate,'%Y-%m') AS aa FROM Blog GROUP BY DATE_FORMAT(Createdate,'%Y-%m') ORDER BY aa DESC ";
             using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {
                 var list = connection.Query<string>(sql).ToList();
@@ -113,7 +117,7 @@ namespace Weqan.Blog.DAL
             {
                 strWhere = " where " + strWhere;
             }
-            string sql = string.Format("select * from Blog {0} order by {1} offset {2} rows fetch next {3} rows only", strWhere, orderstr, (PageIndex - 1) * PageSize, PageSize);
+            string sql = string.Format($"select * from Blog {strWhere} order by {orderstr} limit {(PageIndex-1)*PageSize},{PageSize}", strWhere, orderstr, (PageIndex - 1) * PageSize, PageSize);
             List<Model.Blog> list = new List<Model.Blog>();
             using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
             {

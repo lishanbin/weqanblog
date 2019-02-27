@@ -14,6 +14,21 @@ namespace Weqan.Blog.DAL
         /// </summary>
         public string ConnStr { get; set; }
 
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public int Insert(Model.Admin m)
+        {
+            using (var connection=ConnectionFactory.GetOpenConnection(ConnStr))
+            {
+                int resid = connection.Query<int>(@"INSERT INTO Admin(username,password) values(@username,@password);SELECT @@IDENTITY;", m).FirstOrDefault();
+                return resid;
+            }
+        }
+
         /// <summary>
         /// 登录
         /// </summary>

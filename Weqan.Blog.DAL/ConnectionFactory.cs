@@ -18,7 +18,8 @@ namespace Weqan.Blog.DAL
         /// <returns></returns>
         public static DbConnection GetOpenConnection(string connStr)
         {
-            var connection = new SqlConnection(connStr);
+            //var connection = new SqlConnection(connStr);
+            var connection = new MySql.Data.MySqlClient.MySqlConnection(connStr);
             connection.Open();
 
             return connection;
